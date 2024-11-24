@@ -1,4 +1,4 @@
-../../.idea/
-venv/
-db.sqllite3
+.idea
+.venv
+db.sqlite3
 pojio_front-main/
