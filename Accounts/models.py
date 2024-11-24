@@ -32,10 +32,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     role = models.CharField(max_length=7, choices=ROLE_CHOICES)
+    email = models.EmailField()
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)  # اضافه کردن فیلد is_superuser
-
+    is_superuser = models.BooleanField(default=False)
     is_vip = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
