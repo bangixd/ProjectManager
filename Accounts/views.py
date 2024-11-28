@@ -12,9 +12,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.urls import reverse
 from ProjectManager.settings import DEFAULT_FROM_EMAIL
+from rest_framework.permissions import AllowAny
+from .permissions import IsAnonymousUser
 
 class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = [IsAnonymousUser]
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -43,7 +46,7 @@ class UserLogoutViews(views.APIView):
 class ChangePasswordUser(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializers
     model = models.User
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [permissions.IsAuthenticated]
     
     def get_object(self):
         return self.request.user
@@ -107,7 +110,7 @@ class PasswordResetConfirmView(generics.GenericAPIView):
             uid = urlsafe_base64_decode(uidb64).decode()
             user = models.User.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, models.User.DoesNotExist):
-            user = None
+            return Response({"detail": "Invalid or expired token."}, status=status.HTTP_400_BAD_REQUEST)
         if user and default_token_generator.check_token(user, token):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)

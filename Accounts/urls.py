@@ -23,8 +23,7 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password-rest-confirm'),
 ]
 
-
 # {
-#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNTA0NzU3MywiaWF0IjoxNzMyNDU1NTczLCJqdGkiOiI1ZTYyMzgxNWFlYzA0YzMxODE2OTk0ZDUyOGU5MGI3ZiIsInVzZXJfaWQiOjJ9.G9rl3g_PmxLBRTecc8HVl4-cFzc25aKJ-oQTyFP2BJs",
-#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNTQxOTczLCJpYXQiOjE3MzI0NTU1NzMsImp0aSI6ImI5ZGQ1YTdjZWYxYzRiZTRhYWVhMTk4NGQyNzg1MTJhIiwidXNlcl9pZCI6Mn0.9Y7aiP5wOGFmLLkRXgXdF0QIgm9n_eptQp-A5NYJX6M"
+#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNTIyODM3OSwiaWF0IjoxNzMyNjM2Mzc5LCJqdGkiOiJlMWUxY2FkZjNhMmI0MTJjYjhhOWRjYWNmMzNjZDM2ZCIsInVzZXJfaWQiOjQyfQ.RrMTeyHOhy9CI5y3e0SyFLGVj9XqTruSzkvS4r88K_c",
+#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzIyNzc5LCJpYXQiOjE3MzI2MzYzNzksImp0aSI6IjhhZTFhMGI1M2YxMzQzZjE4NGY2NTUwMjNmMjY1ZWU3IiwidXNlcl9pZCI6NDJ9.azq77fLupCqjgJvh_OJNmWzlM_8Aa4ROTeMHvE3tqoc"
 # }

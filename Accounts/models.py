@@ -1,12 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from .validators import phone_validator
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
+from ProjectManager.custom_validator import CustomPasswordValidator
+from django.contrib.auth.hashers import is_password_usable
+
 class UserManager(BaseUserManager):
-    def create_user(self, phone_number, password=None, **extra_fields):
+    def create_user(self, phone_number, password:str=None, **extra_fields):
         if not phone_number:
             raise ValueError('The phone number field must be set')
         user = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(password)
+        if password:
+            user.set_password(password)
         user.save(using=self._db)
         return user
     
@@ -18,7 +26,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-        
+        print('this is first')
         return self.create_user(phone_number, password, **extra_fields)
 
 
@@ -41,12 +49,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'role', 'email']
 
     objects = UserManager()
 
     def __str__(self):
         return f'{self.phone_number} - {self.role} {"(VIP)" if self.is_vip else ""}'
+
+
+    def set_password(self, raw_password):
+        try:
+            validate_password(raw_password, self)
+        except ValidationError as e:
+            raise e
+        self.password = make_password(raw_password)
+
+    def save(self, *args, **kwargs):            
+        if self.password and not is_password_usable(self.password) and self._password != self.password:
+            self.set_password(self.password)
+        
+        super(User, self).save(*args, **kwargs)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
