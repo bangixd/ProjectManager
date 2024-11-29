@@ -16,6 +16,17 @@ from rest_framework.permissions import AllowAny
 from .permissions import IsAnonymousUser
 
 class UserCreate(generics.CreateAPIView):
+    """
+    API endpoint to create a new user account.
+
+    This endpoint allows anonymous users to register a new account by providing 
+    the necessary user details (username, email, password, etc.).
+
+    **Method:** POST  
+    **Request Body:** User details  
+    **Permissions:** Open to anonymous users  
+    **Response:** Returns user details upon successful registration.
+    """
     serializer_class = UserSerializer
     permission_classes = [IsAnonymousUser]
 
@@ -25,6 +36,15 @@ class UserCreate(generics.CreateAPIView):
 
 
 class UserProfileDetail(generics.ListAPIView):
+    """
+    API endpoint to retrieve the profile details of the authenticated user.
+
+    This endpoint fetches profile information for the currently logged-in user.
+
+    **Method:** GET  
+    **Permissions:** Requires user authentication.  
+    **Response:** Returns the profile details of the authenticated user.
+    """
     serializer_class =  UserProfileDetailSerializer
     permission_classes = [permissions.IsAuthenticated,]
     lookup_field = 'user' 
@@ -34,6 +54,16 @@ class UserProfileDetail(generics.ListAPIView):
 
 
 class UserLogoutViews(views.APIView):
+    """
+    API endpoint for logging out a user.
+
+    This endpoint invalidates the user's token to log them out of the system.
+
+    **Method:** POST  
+    **Request Body:** Refresh token.  
+    **Permissions:** Requires user authentication.  
+    **Response:** A success message upon successful logout.
+    """
     serializer_class = UserLogoutSerializer
 
     def post(self, request, *args, **kwargs):
@@ -44,6 +74,17 @@ class UserLogoutViews(views.APIView):
     
     
 class ChangePasswordUser(generics.UpdateAPIView):
+    """
+    API endpoint to update the authenticated user's password.
+
+    This endpoint allows a user to update their password by providing the 
+    old password and a new password.
+
+    **Method:** PUT  
+    **Request Body:** Old password, new password, confirm password.  
+    **Permissions:** Requires user authentication.  
+    **Response:** A success message upon successful password update.
+    """
     serializer_class = ChangePasswordSerializers
     model = models.User
     permission_classes = [permissions.IsAuthenticated]
@@ -78,6 +119,16 @@ class ChangePasswordUser(generics.UpdateAPIView):
 
 
 class PasswordResetRequestView(generics.GenericAPIView):
+    """
+    API endpoint to request a password reset.
+
+    This endpoint sends an email containing a password reset link to the user.
+
+    **Method:** POST  
+    **Request Body:** Email address.  
+    **Permissions:** Open to all users.  
+    **Response:** A success message if the reset email is sent successfully.
+    """
     serializer_class = PasswordResetRequestSerializer
 
     def post(self, request, *args, **kwargs):
@@ -103,6 +154,17 @@ class PasswordResetRequestView(generics.GenericAPIView):
 
 
 class PasswordResetConfirmView(generics.GenericAPIView):
+    """
+    API endpoint to confirm a password reset.
+
+    This endpoint allows a user to set a new password using a token and user ID 
+    from the password reset link.
+
+    **Method:** POST  
+    **Request Body:** New password and confirm password.  
+    **Permissions:** Open to users with a valid reset token.  
+    **Response:** A success message upon resetting the password.
+    """
     serializer_class = PasswordResetConfirmSerializer
 
     def post(self, request, uidb64=None, token=None, *args, **kwargs):
