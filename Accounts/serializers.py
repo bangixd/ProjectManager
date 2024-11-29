@@ -4,6 +4,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
+from ProjectManager.custom_validator import CustomPasswordValidator
+from django.contrib.auth import password_validation
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +21,22 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['is_vip']
         extra_kwargs = {'password': {'write_only': True}}
+        
+    
 
+    def validate_password(self, value):
+        try:
+            validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        
+        custom_validator = CustomPasswordValidator()
+        try:
+            custom_validator.validate(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return value
+    
     def create(self, validated_data):
         if "password" in validated_data:
             validated_data['password'] = make_password(validated_data['password'])
@@ -92,16 +109,16 @@ class PasswordResetRequestSerializer(serializers.Serializer):
 
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
-    new_password = serializers.CharField(write_only=True, validators=[validate_password], required=True)
+    new_password = serializers.CharField(write_only=True, required=True)
     confirm_password = serializers.CharField(write_only=True, required=True)
 
     def validate(self, attrs):
         if attrs['new_password'] != attrs['confirm_password']:
-            raise serializers.ValidationError({'confirm_password': "new password fields didn't match"})
+            raise serializers.ValidationError({'confirm_password': "New password and confirm password didn't match"})
+        password_validation.validate_password(attrs['new_password'])
         return attrs
 
     def save(self, user):
         user.set_password(self.validated_data['new_password'])
         user.save()
         return user
-
