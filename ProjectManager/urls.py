@@ -24,7 +24,7 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Project Manager with DRF",
+        title="Project Manager",
         default_version="v0.0.1-beta",
         description="this is a api version of projectmanager.com website",
         terms_of_service="https://www.google.com/policies/terms/",

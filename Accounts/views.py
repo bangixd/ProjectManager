@@ -14,6 +14,7 @@ from django.urls import reverse
 from ProjectManager.settings import DEFAULT_FROM_EMAIL
 from rest_framework.permissions import AllowAny
 from .permissions import IsAnonymousUser
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserCreate(generics.CreateAPIView):
     """
@@ -73,6 +74,20 @@ class UserLogoutViews(views.APIView):
         return Response("Successful logout", status=status.HTTP_200_OK)
     
     
+class UserLoginView(TokenObtainPairView):
+    """
+    API endpoint for logging in a user and obtaining JWT tokens.
+
+    This endpoint allows users to log in by providing their username and password,
+    and upon successful authentication, it returns access and refresh tokens.
+
+    **Method:** POST  
+    **Request Body:** username (or phone number), password  
+    **Permissions:** Open to all users  
+    **Response:** Returns access and refresh tokens upon successful login.
+    """
+    permission_classes = [AllowAny]
+    
 class ChangePasswordUser(generics.UpdateAPIView):
     """
     API endpoint to update the authenticated user's password.
@@ -130,7 +145,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
     **Response:** A success message if the reset email is sent successfully.
     """
     serializer_class = PasswordResetRequestSerializer
-
+    permission_classes = [permissions.AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -141,7 +156,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             reset_url = request.build_absolute_uri(
-                reverse('accounts:password-rest-confirm', kwargs={'uidb64': uid, 'token': token})
+                reverse('accounts:password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
             )
             send_mail('Password Reset Request of POJIO',
                       f'Click the link blow to rest your password: {reset_url}',
