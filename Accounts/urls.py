@@ -18,9 +18,11 @@ urlpatterns = [
     path('create/user/', views.UserCreate.as_view(), name='create_user'),
     path('profile/', views.UserProfileDetail.as_view(), name='user_profile'),
     path('user/logout/', views.UserLogoutViews.as_view(), name='user_logout'),
+    path('user/login/', views.UserLoginView.as_view(), name='user_login'),
     path('change/password/', views.ChangePasswordUser.as_view(), name='user_change_password'),
-    path('password-reset/', views.PasswordResetRequestView.as_view(), name='password-reset-req'),
-    path('password-reset-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password-rest-confirm'),
+    path('password-reset/', views.PasswordResetRequestView.as_view(), name='password_reset_request'),
+    path('password-reset-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
 ]
 
 # {

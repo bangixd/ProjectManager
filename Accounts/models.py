@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .validators import phone_validator
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -7,27 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from ProjectManager.custom_validator import CustomPasswordValidator
 from django.contrib.auth.hashers import is_password_usable
-
-class UserManager(BaseUserManager):
-    def create_user(self, phone_number, password:str=None, **extra_fields):
-        if not phone_number:
-            raise ValueError('The phone number field must be set')
-        user = self.model(phone_number=phone_number, **extra_fields)
-        if password:
-            user.set_password(password)
-        user.save(using=self._db)
-        return user
-    
-    def create_superuser(self, phone_number, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-        print('this is first')
-        return self.create_user(phone_number, password, **extra_fields)
+from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
