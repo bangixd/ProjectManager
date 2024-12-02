@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Apps
     'Accounts.apps.AccountsConfig',
     'Projects.apps.ProjectsConfig',
+    'Financial.apps.FinancialConfig',
 ]
 
 AUTH_USER_MODEL = 'Accounts.User'
