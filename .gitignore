@@ -3,3 +3,4 @@
 db.sqlite3
 pojio_front-main/
 .coverage
+htmlcov
