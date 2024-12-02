@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
+from Financial.models import FinancialRecord
 
 class Project(models.Model):
     COLOR_CHOICES = (
@@ -23,7 +24,7 @@ class Project(models.Model):
     end_date = models.DateField(null=True, blank=True)
     status = models.BooleanField(default=False)
     budget = models.PositiveBigIntegerField(null=True, blank=True)
-    # financial_object_type = GenericRelation(FinancialRecord, related_name='project')
+    financial_object_type = GenericRelation(FinancialRecord, related_name='project')
 
     def __str__(self):
         return self.title
@@ -53,7 +54,7 @@ class Task(models.Model):
     end_date = models.DateField(null=True, blank=True)
     status = models.BooleanField(default=False)
     budget = models.PositiveBigIntegerField(null=True, blank=True)
-    # financial_object_type = GenericRelation(FinancialRecord, related_name='task')
+    financial_object_type = GenericRelation(FinancialRecord, related_name='task')
 
     def __str__(self):
         return self.title
@@ -84,7 +85,7 @@ class SubTask(models.Model):
     end_date = models.DateField(null=True, blank=True)
     status = models.BooleanField(default=False)
     budget = models.PositiveBigIntegerField(null=True, blank=True)
-    # financial_object_type = GenericRelation(FinancialRecord, related_name='subtask')
+    financial_object_type = GenericRelation(FinancialRecord, related_name='subtask')
 
     def __str__(self):
         return self.title

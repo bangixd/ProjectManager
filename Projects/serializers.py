@@ -34,7 +34,7 @@ class ProjectSerializers(serializers.ModelSerializer):
             'end_date',
             'status',
             'budget',
-            # 'content_id',
+            'content_id',
         ]
         extra_kwargs = {
             'user': {'read_only': True}
@@ -75,7 +75,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'start_date',
             'end_date',
             'status',
-            # 'content_id',
+            'content_id',
         ]
         depth = 1
         extra_kwargs = {
@@ -117,7 +117,7 @@ class SubtaskSerializers(serializers.ModelSerializer):
             'start_date',
             'end_date',
             'status',
-            # 'content_id',
+            'content_id',
         ]
         depth = 2
         extra_kwargs = {
