@@ -1,34 +1,60 @@
 from django.contrib import admin
 from .models import Project, Task, SubTask
-import admin_thumbnails
 
-@admin_thumbnails.thumbnail('image')
+
+@admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title', 'color', 'status', 'image_thumbnail',)
-    list_filter = ('color', 'status',)
-    list_editable = ('color', 'status',)
-    search_fields = ('user__username', 'user__last_name', 'user__first_name', 'user__email',)
-    list_per_page = 10
+    list_display = ('title', 'user', 'status', 'color', 'budget', 'start_date', 'end_date')
+    list_filter = ('color', 'status', 'start_date', 'end_date')
+    search_fields = ('title', 'description', 'user__username')
+    actions = ['mark_as_completed', 'reset_budget']
+
+    def mark_as_completed(self, request, queryset):
+        queryset.update(status=True)
+        self.message_user(request, "Selected projects have been marked as completed.")
+    mark_as_completed.short_description = "Mark selected projects as completed"
+
+    def reset_budget(self, request, queryset):
+        queryset.update(budget=0)
+        self.message_user(request, "Budget reset for selected projects.")
+    reset_budget.short_description = "Reset budget for selected projects"
 
 
-@admin_thumbnails.thumbnail('image')
+
+@admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'project', 'title', 'color', 'status', 'image_thumbnail',)
-    list_filter = ('color', 'status',)
-    list_editable = ('color', 'status',)
-    search_fields = ('project__user__username',)
-    list_per_page = 10
+    list_display = ('title', 'project', 'status', 'color', 'budget', 'start_date', 'end_date')
+    list_filter = ('color', 'status', 'start_date', 'end_date', 'project__user')
+    search_fields = ('title', 'description', 'project__title')
+    actions = ['mark_as_completed', 'duplicate_tasks']
+
+    def mark_as_completed(self, request, queryset):
+        queryset.update(status=True)
+        self.message_user(request, "Selected tasks have been marked as completed.")
+    mark_as_completed.short_description = "Mark selected tasks as completed"
+
+    def duplicate_tasks(self, request, queryset):
+        for task in queryset:
+            task.pk = None
+            task.title += " (Copy)"
+            task.save()
+        self.message_user(request, "Selected tasks have been duplicated.")
+    duplicate_tasks.short_description = "Duplicate selected tasks"
 
 
-@admin_thumbnails.thumbnail('image')
+@admin.register(SubTask)
 class SubTaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'task', 'title', 'color', 'status', 'image_thumbnail',)
-    list_filter = ('color', 'status',)
-    list_editable = ('color', 'status',)
-    search_fields = ('task__project__user__username',)
-    list_per_page = 10
+    list_display = ('title', 'task', 'status', 'color', 'budget', 'start_date', 'end_date')
+    list_filter = ('color', 'status', 'start_date', 'end_date', 'task__project')
+    search_fields = ('title', 'description', 'task__title', 'task__project__title')
+    actions = ['mark_as_completed', 'assign_color']
 
+    def mark_as_completed(self, request, queryset):
+        queryset.update(status=True)
+        self.message_user(request, "Selected subtasks have been marked as completed.")
+    mark_as_completed.short_description = "Mark selected subtasks as completed"
 
-admin.site.register(Project, ProjectAdmin)
-admin.site.register(Task, TaskAdmin)
-admin.site.register(SubTask, SubTaskAdmin)
+    def assign_color(self, request, queryset):
+        queryset.update(color='yellow')
+        self.message_user(request, "Color 'yellow' assigned to selected subtasks.")
+    assign_color.short_description = "Assign 'yellow' color to selected subtasks"
