@@ -15,6 +15,9 @@ This project is built with the following technologies:
 - **Backend**: djangoDRF
 - **Database**: postgresql
 - **Authentication**: JWT (JSON Web Tokens) for secure user authentication
+- **Secure Passwords**: Passwords are hashed using Argon2, one of the most secure and modern hashing methods.
+- **Comprehensive Testing**: All apps, including Tasks, Projects, Financial, and Accounts, are fully tested to ensure functionality and reliability.
+- **Admin Panel Enhancements**: Improved admin panel with additional actions and better user control for streamlined management.
 
 ## ChangeLog
 
