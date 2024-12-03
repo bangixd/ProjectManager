@@ -33,7 +33,11 @@ This project is built with the following technologies:
 #### Added
 - add vip user mode to app
 
-### [1.2.0] - 2024-12-01
+### [Initial Development]
 #### Added
-- add project model
-- basic managements on projects
+#### Added Accounts models
+- Introduced user and profile models in the Accounts app. (commit: bff5a4c)
+#### Added password hashing and Argon2 integration
+- Configured Argon2 for secure password storage. (commit: fde23f4)
+#### Initial project setup
+- Created the initial project structure and setup. (commit: f4a2fdf)
