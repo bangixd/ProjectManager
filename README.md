@@ -19,22 +19,29 @@ This project is built with the following technologies:
 
 ## ChangeLog
 
-### [1.0.0] - 2024-12-01
-#### Added
-- Initial release with basic task management features.
-- User authentication using JWT.
-- Ability to create and manage users.
+### [v1.1.0] - 2024-12-02
+#### Merge pull request for admin panel
+- Updated the admin panel view and added admin actions. (commit: ed376de)
+#### Merge pull request for environment configuration
+- Added .env configuration and requirements file for environment management. (commit: 55400be)
+#### Merge pull request for PostgreSQL support
+- Configured the project to use PostgreSQL as the database. (commit: 76efd37)
 
-### [1.0.1] - 2024-12-01
-#### Fixed
-- Fix problme with logout wich user could access endpoints after logout.
+=====================================================
+  
+### [v1.0.0] - 2024-11-15
+#### Added Financial models
+- Developed the financial module and integrated its models and views. (commit: 7b29ea6)
+#### Added Projects module
+- Introduced the projects module with models, views, and tests. (commit: 395cc5f)
+#### Completed Accounts app testing
+- Added tests for the Accounts app and resolved related bugs. (commit: 988fa9a)
+#### Added Swagger documentation
+- Provided Swagger docs for the API endpoints. (commit: 609c504)
 
-### [1.0.2] - 2024-12-01
-#### Added
-- add vip user mode to app
+=====================================================
 
 ### [Initial Development]
-#### Added
 #### Added Accounts models
 - Introduced user and profile models in the Accounts app. (commit: bff5a4c)
 #### Added password hashing and Argon2 integration
